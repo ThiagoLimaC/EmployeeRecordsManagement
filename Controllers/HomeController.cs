@@ -1,5 +1,4 @@
 using System.Diagnostics;
-using EmployeeRecordsManagement.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EmployeeRecordsManagement.Controllers
@@ -21,12 +20,6 @@ namespace EmployeeRecordsManagement.Controllers
         public IActionResult Privacy()
         {
             return View();
-        }
-
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
     }
 }
