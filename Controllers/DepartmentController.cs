@@ -13,5 +13,11 @@ namespace EmployeeRecordsManagement.Controllers
         {
             return View();
         }
+
+        [HttpPost]
+        public IActionResult Add(string name)
+        {
+            return View();
+        }
     }
 }
