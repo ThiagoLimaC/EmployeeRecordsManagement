@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using EmployeeRecordsManagement.ViewModels;
+using Microsoft.AspNetCore.Mvc;
 
 namespace EmployeeRecordsManagement.Controllers
 {
@@ -18,7 +19,7 @@ namespace EmployeeRecordsManagement.Controllers
 
         // POST: Employee/Add
         [HttpPost]
-        public IActionResult Add(string firstName, string lastName)
+        public IActionResult Add(EmployeeViewModel model)
         {
             return View();
         }
