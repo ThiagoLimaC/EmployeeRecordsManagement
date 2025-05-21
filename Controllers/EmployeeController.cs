@@ -31,6 +31,14 @@ namespace EmployeeRecordsManagement.Controllers
         [HttpPost]
         public IActionResult Add(EmployeeViewModel model)
         {
+            if (!ModelState.IsValid)
+            {
+                return View(model); // Return to the form with validation errors
+            }
+
+            //Insert data to the database
+
+
             return View();
         }
     }

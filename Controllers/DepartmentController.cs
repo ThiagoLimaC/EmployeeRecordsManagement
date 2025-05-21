@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using EmployeeRecordsManagement.ViewModels;
+using Microsoft.AspNetCore.Mvc;
 
 namespace EmployeeRecordsManagement.Controllers
 {
@@ -9,8 +10,6 @@ namespace EmployeeRecordsManagement.Controllers
             return View();
         }
 
-        // GET: Employee/Add
-        [HttpGet]
         public IActionResult Add()
         {
             return View();
@@ -18,8 +17,13 @@ namespace EmployeeRecordsManagement.Controllers
 
         // POST: Employee/Add
         [HttpPost]
-        public IActionResult Add(string name)
+        public IActionResult Add(DepartmentViewModel model)
         {
+            if (!ModelState.IsValid)
+            {
+                return View(model); // Return to the form with validation errors
+            }
+
             return View();
         }
     }
