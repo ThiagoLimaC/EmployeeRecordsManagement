@@ -29,7 +29,7 @@ namespace EmployeeRecordsManagement.ViewModels
         public string Email { get; set; }
 
         [Required(ErrorMessage = "Phone number is required.")]
-        [EmailAddress(ErrorMessage = "Invalid phone number.")]
+        [Phone(ErrorMessage = "Invalid phone number.")]
         public string PhoneNumber { get; set; }
 
         [Required(ErrorMessage = "Gender is required.")]
@@ -41,6 +41,6 @@ namespace EmployeeRecordsManagement.ViewModels
         //Relationship with Department
         [ForeignKey("Department")]
         public int DepartmentId { get; set; }
-        public Department Department { get; set; }
+        public Department? Department { get; set; } // Reference navigation property
     }
 }

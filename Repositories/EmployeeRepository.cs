@@ -1,6 +1,8 @@
 ﻿using EmployeeRecordsManagement.Data;
 using EmployeeRecordsManagement.Models;
+using EmployeeRecordsManagement.ViewModels;
 using Microsoft.EntityFrameworkCore;
+using System.Runtime.InteropServices;
 
 namespace EmployeeRecordsManagement.Repositories
 {
@@ -13,9 +15,21 @@ namespace EmployeeRecordsManagement.Repositories
             _dbContext = dbContext;
         }
 
-        public async Task AddAsync(Employee employee)
+        public async Task AddAsync(EmployeeViewModel employee)
         {
-            await _dbContext.Employees.AddAsync(employee);
+            var newEmployee = new Employee()
+            {
+                FirstName = employee.FirstName,
+                LastName = employee.LastName,
+                DateOfBirth = employee.DateOfBirth,
+                PhoneNumber = employee.PhoneNumber,
+                Gender = employee.Gender,
+                Email = employee.Email,
+                Address = employee.Address,
+                DepartmentId = employee.DepartmentId
+            };
+
+            await _dbContext.Employees.AddAsync(newEmployee);
             await _dbContext.SaveChangesAsync();
         }
 
@@ -30,6 +44,7 @@ namespace EmployeeRecordsManagement.Repositories
         {
             return await _dbContext.Employees.ToListAsync();
         }
+
 
         public async Task<Employee> GetByIdAsync(int id)
         {
@@ -48,6 +63,10 @@ namespace EmployeeRecordsManagement.Repositories
             employee.DepartmentId = employeeUpdated.DepartmentId;
             _dbContext.Employees.Update(employee);
             await _dbContext.SaveChangesAsync();
+        }
+        public async Task<List<Department>> GetAllDepartments()
+        {
+            return await _dbContext.Departments.ToListAsync();
         }
     }
 }

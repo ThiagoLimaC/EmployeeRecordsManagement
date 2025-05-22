@@ -1,10 +1,17 @@
-﻿using EmployeeRecordsManagement.ViewModels;
+﻿using EmployeeRecordsManagement.Repositories;
+using EmployeeRecordsManagement.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EmployeeRecordsManagement.Controllers
 {
     public class DepartmentController : Controller
     {
+        private readonly IDepartmentRepository _departmentRepository;
+        public DepartmentController(IDepartmentRepository departmentRepository)
+        {
+            _departmentRepository = departmentRepository;
+        }
+
         public IActionResult Index()
         {
             return View();
@@ -17,14 +24,17 @@ namespace EmployeeRecordsManagement.Controllers
 
         // POST: Employee/Add
         [HttpPost]
-        public IActionResult Add(DepartmentViewModel model)
+        public async Task<IActionResult> Add(DepartmentViewModel model)
         {
             if (!ModelState.IsValid)
             {
                 return View(model); // Return to the form with validation errors
             }
 
-            return View();
+            // Insert data to the database
+            await _departmentRepository.AddAsync(model);
+
+            return RedirectToAction("Index", "Department");
         }
     }
 }

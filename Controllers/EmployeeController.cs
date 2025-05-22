@@ -1,4 +1,5 @@
 ﻿using EmployeeRecordsManagement.Models;
+using EmployeeRecordsManagement.Repositories;
 using EmployeeRecordsManagement.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -7,6 +8,14 @@ namespace EmployeeRecordsManagement.Controllers
 {
     public class EmployeeController : Controller
     {
+        private readonly IEmployeeRepository _employeeRepository;
+
+        // Dependency injection
+        public EmployeeController(IEmployeeRepository employeeRepository)
+        {
+            _employeeRepository = employeeRepository;
+        }
+
         public IActionResult Index()
         {
             return View();
@@ -14,13 +23,9 @@ namespace EmployeeRecordsManagement.Controllers
 
         // GET: Employee/Add
         [HttpGet]
-        public IActionResult Add()
+        public async Task<IActionResult> Add()
         {
-            List<Department> departments = new List<Department>
-            {
-                new Department { DepartmentId = 1, Name = "IT"},
-                new Department { DepartmentId = 2, Name = "HR"}
-            };
+            var departments = await _employeeRepository.GetAllDepartments();
 
             ViewBag.Departments = new SelectList(departments, "DepartmentId", "Name");
 
@@ -29,17 +34,19 @@ namespace EmployeeRecordsManagement.Controllers
 
         // POST: Employee/Add
         [HttpPost]
-        public IActionResult Add(EmployeeViewModel model)
+        public async Task<IActionResult> Add(EmployeeViewModel model)
         {
             if (!ModelState.IsValid)
             {
                 return View(model); // Return to the form with validation errors
             }
 
-            //Insert data to the database
+            //Save the employee to the database
+            await _employeeRepository.AddAsync(model);
 
+            // Redirect to List all department page
+            return RedirectToAction("Index", "Employee");
 
-            return View();
         }
     }
 }

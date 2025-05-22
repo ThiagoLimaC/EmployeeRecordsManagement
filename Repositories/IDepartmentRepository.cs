@@ -1,4 +1,5 @@
 ﻿using EmployeeRecordsManagement.Models;
+using EmployeeRecordsManagement.ViewModels;
 
 namespace EmployeeRecordsManagement.Repositories
 {
@@ -6,7 +7,7 @@ namespace EmployeeRecordsManagement.Repositories
     {
         Task<Department> GetByIdAsync(int id);
         Task<List<Department>> GetAllAsync();
-        Task AddAsync(Department department);
+        Task AddAsync(DepartmentViewModel department);
         Task UpdateAsync(Department department);
         Task DeleteAsync(int Id);
     }
