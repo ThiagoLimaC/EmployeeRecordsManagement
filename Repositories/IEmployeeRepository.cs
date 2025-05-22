@@ -6,7 +6,7 @@ namespace EmployeeRecordsManagement.Repositories
     public interface IEmployeeRepository
     {
         Task<Employee> GetByIdAsync(int id);
-        Task<List<Employee>> GetAllAsync();
+        Task<List<EmployeeViewModel>> GetAllAsync();
         Task AddAsync(EmployeeViewModel employee);
         Task UpdateAsync(Employee employee);
         Task DeleteAsync(int Id);
