@@ -26,7 +26,8 @@ namespace EmployeeRecordsManagement.Repositories
                 Gender = employee.Gender,
                 Email = employee.Email,
                 Address = employee.Address,
-                DepartmentId = employee.DepartmentId
+                DepartmentId = employee.DepartmentId,
+                IsActive = employee.IsActive
             };
 
             await _dbContext.Employees.AddAsync(newEmployee);
@@ -67,12 +68,27 @@ namespace EmployeeRecordsManagement.Repositories
         }
 
 
-        public async Task<Employee> GetByIdAsync(int id)
+        public async Task<EmployeeViewModel> GetByIdAsync(int id)
         {
-            return await _dbContext.Employees.FindAsync(id);
+            var employee = await _dbContext.Employees.FindAsync(id);
+
+            var employeeViewModel = new EmployeeViewModel()
+            {
+                EmployeeId = employee.EmployeeId,
+                FirstName = employee.FirstName,
+                LastName = employee.LastName,
+                DateOfBirth = employee.DateOfBirth,
+                PhoneNumber = employee.PhoneNumber,
+                Gender = employee.Gender,
+                Email = employee.Email,
+                Address = employee.Address,
+                DepartmentId = employee.DepartmentId
+            };
+
+            return employeeViewModel;
         }
 
-        public async Task UpdateAsync(Employee employeeUpdated)
+        public async Task UpdateAsync(EmployeeViewModel employeeUpdated)
         {
             var employee = await _dbContext.Employees.FindAsync(employeeUpdated.EmployeeId);
             employee.FirstName = employeeUpdated.FirstName;

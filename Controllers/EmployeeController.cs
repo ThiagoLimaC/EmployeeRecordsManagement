@@ -49,5 +49,47 @@ namespace EmployeeRecordsManagement.Controllers
             return RedirectToAction("Index", "Employee");
 
         }
+
+        //GET: Employee/Edit
+        [HttpGet]
+        public async Task<IActionResult> Edit(int id)
+        {
+            // Fetch department details
+            var departments = await _employeeRepository.GetAllDepartments();
+            ViewBag.Departments = new SelectList(departments, "DepartmentId", "Name");
+            
+
+            // Fetch employee details
+            var employee = await _employeeRepository.GetByIdAsync(id);
+
+            return View(employee);
+        }
+
+        //GET: Employee/Edit
+        [HttpPost]
+        public async Task<IActionResult> Edit(EmployeeViewModel employee)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(employee); // Return to the form with validations errors
+            }
+
+            // Update the database with modified details
+            await _employeeRepository.UpdateAsync(employee);
+
+            // Return to List all employee page
+            return RedirectToAction("Index", "Employee");
+        }
+
+        //GET: Employee/Delete
+        [HttpGet]
+        public async Task<IActionResult> Delete(int id)
+        {
+            // Fetch employee details
+            await _employeeRepository.DeleteAsync(id);
+
+            // Return to List all employee page
+            return RedirectToAction("Index", "Employee");
+        }
     }
 }

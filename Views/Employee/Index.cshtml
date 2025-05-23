@@ -25,6 +25,7 @@
                        <th scope="col">Address</th>
                        <th scope="col">Is Active</th>
                        <th></th>
+                       <th></th>
                    </tr>
                </thead>
 
@@ -41,6 +42,16 @@
                            <td>@employee.PhoneNumber</td>
                            <td>@employee.Address</td>
                            <td>@employee.IsActive</td>
+                           <td><a class="btn btn-dark" asp-controller="Employee" asp-action="Edit" asp-route-id="@employee.EmployeeId">Edit</a></td>
+                           <td><a 
+                               class="btn btn-danger" 
+                               asp-controller="Employee" 
+                               asp-action="Delete" 
+                               asp-route-id="@employee.EmployeeId"
+                               onclick="return confirm('Are your sure you want to delete this employee?')">
+                               Delete
+                           </a>
+                           </td>
                        </tr>
                    }
                </tbody>

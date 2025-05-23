@@ -18,6 +18,8 @@ namespace EmployeeRecordsManagement.Controllers
             return View(departments);
         }
 
+        // GET : Departments/Add
+        [HttpGet]
         public IActionResult Add()
         {
             return View();
@@ -34,6 +36,40 @@ namespace EmployeeRecordsManagement.Controllers
 
             // Insert data to the database
             await _departmentRepository.AddAsync(model);
+
+            return RedirectToAction("Index", "Department");
+        }
+
+        // GET: Department/edit
+        [HttpGet]
+        public async Task<IActionResult> Edit(int id)
+        {
+            // Fetch department details 
+            var department = await _departmentRepository.GetByIdAsync(id);
+
+            return View(department);
+        }
+
+        // Department/Edit
+        [HttpPost]
+        public async Task<IActionResult> Edit(DepartmentViewModel department)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(department);
+            }
+
+            await _departmentRepository.UpdateAsync(department);
+
+            return RedirectToAction("Index", "Department");
+        }
+
+        // Department/Delete
+        [HttpGet]
+        public async Task<IActionResult> Delete(int id)
+        {
+            // Fetch department details 
+            await _departmentRepository.DeleteAsync(id);
 
             return RedirectToAction("Index", "Department");
         }

@@ -13,9 +13,17 @@ namespace EmployeeRecordsManagement.Repositories
         {
             _dbContext = dbContext;
         }
-        public async Task<Department> GetByIdAsync(int id)
+        public async Task<DepartmentViewModel> GetByIdAsync(int id)
         {
-            return await _dbContext.Departments.FindAsync(id);
+            var department = await _dbContext.Departments.FindAsync(id);
+
+            var departmentViewModel = new DepartmentViewModel()
+            {
+                DepartmentId = department.DepartmentId,
+                Name = department.Name
+            };
+
+            return departmentViewModel;
         }
         public async Task<List<DepartmentViewModel>> GetAllAsync()
         {
@@ -54,7 +62,7 @@ namespace EmployeeRecordsManagement.Repositories
             await _dbContext.SaveChangesAsync();
         }
 
-        public async Task UpdateAsync(Department departmentUpdated)
+        public async Task UpdateAsync(DepartmentViewModel departmentUpdated)
         {
             var department = await _dbContext.Departments.FindAsync(departmentUpdated.DepartmentId);
             department.Name = departmentUpdated.Name;
