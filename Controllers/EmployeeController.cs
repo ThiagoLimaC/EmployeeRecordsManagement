@@ -16,15 +16,50 @@ namespace EmployeeRecordsManagement.Controllers
             _employeeRepository = employeeRepository;
         }
 
-        public async Task<IActionResult> Index(string searchString)
+        public async Task<IActionResult> Index(string searchString, string sortOrder)
         {
             var employees = await _employeeRepository.GetAllAsync();
 
+            // Search functionality
             if (!String.IsNullOrEmpty(searchString))
             {
                 employees = employees.Where(x => x.FirstName.Contains(searchString) 
                 || x.LastName.Contains(searchString)).ToList();
             }
+
+            ViewData["NameSortParam"] = string.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
+            ViewData["DateOfBirthSortParam"] = sortOrder == "date_asc" ? "date_desc" : "date_asc";
+            ViewData["IsActiveSortParam"] = sortOrder == "isactive_asc" ? "isactive_desc" : "isactive_asc";
+
+            // Sort functionality
+
+            switch (sortOrder)
+            {
+                case "name_desc":
+                    employees = employees.OrderByDescending(e => e.FirstName).ToList(); // Descending order
+                    break;
+
+                case "date_asc":
+                    employees = employees.OrderBy(e => e.DateOfBirth).ToList();
+                    break;
+
+                case "date_desc":
+                    employees = employees.OrderByDescending(e => e.DateOfBirth).ToList();
+                    break;
+
+                case "isactive_asc":
+                    employees = employees.OrderBy(e => e.IsActive).ToList();
+                    break;
+
+                case "isactive_desc":
+                    employees = employees.OrderByDescending(e => e.IsActive).ToList();
+                    break;
+
+                default:
+                    employees = employees.OrderBy(e => e.FirstName).ToList(); // Ascending order
+                    break;
+            }
+
 
             return View(employees);
         }

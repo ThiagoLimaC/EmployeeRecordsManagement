@@ -13,14 +13,32 @@ namespace EmployeeRecordsManagement.Controllers
             _departmentRepository = departmentRepository;
         }
 
-        public async Task<IActionResult> Index(string searchString)
+        public async Task<IActionResult> Index(string searchString, string sortOrder)
         {
             var departments = await _departmentRepository.GetAllAsync();
 
+            // Search functionality
             if (!String.IsNullOrEmpty(searchString))
             {
                 departments = departments.Where(x => x.Name.Contains(searchString)).ToList();
             }
+
+
+            ViewData["NameSortParam"] = string.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
+
+            //Sort functionality
+
+            switch (sortOrder)
+            {
+                case "name_desc":
+                    departments = departments.OrderByDescending(d => d.Name).ToList();
+                    break;
+
+                default:
+                    departments = departments.OrderBy(d => d.Name).ToList();
+                    break;
+            }
+
 
             return View(departments);
         }
