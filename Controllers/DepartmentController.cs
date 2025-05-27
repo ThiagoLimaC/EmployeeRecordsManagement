@@ -1,4 +1,5 @@
-﻿using EmployeeRecordsManagement.Repositories;
+﻿using EmployeeRecordsManagement.Models;
+using EmployeeRecordsManagement.Repositories;
 using EmployeeRecordsManagement.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 
@@ -12,9 +13,15 @@ namespace EmployeeRecordsManagement.Controllers
             _departmentRepository = departmentRepository;
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string searchString)
         {
             var departments = await _departmentRepository.GetAllAsync();
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                departments = departments.Where(x => x.Name.Contains(searchString)).ToList();
+            }
+
             return View(departments);
         }
 

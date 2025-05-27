@@ -16,9 +16,16 @@ namespace EmployeeRecordsManagement.Controllers
             _employeeRepository = employeeRepository;
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string searchString)
         {
             var employees = await _employeeRepository.GetAllAsync();
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                employees = employees.Where(x => x.FirstName.Contains(searchString) 
+                || x.LastName.Contains(searchString)).ToList();
+            }
+
             return View(employees);
         }
 
