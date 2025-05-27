@@ -6,7 +6,7 @@ namespace EmployeeRecordsManagement.Repositories
     public interface IDepartmentRepository
     {
         Task<DepartmentViewModel> GetByIdAsync(int id);
-        Task<List<DepartmentViewModel>> GetAllAsync();
+        IQueryable<DepartmentViewModel> GetAllAsync();
         Task AddAsync(DepartmentViewModel department);
         Task UpdateAsync(DepartmentViewModel department);
         Task DeleteAsync(int Id);

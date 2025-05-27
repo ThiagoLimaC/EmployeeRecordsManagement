@@ -25,23 +25,18 @@ namespace EmployeeRecordsManagement.Repositories
 
             return departmentViewModel;
         }
-        public async Task<List<DepartmentViewModel>> GetAllAsync()
+        public IQueryable<DepartmentViewModel> GetAllAsync()
         {
-            List<Department> departments = await _dbContext.Departments.ToListAsync();
-            List<DepartmentViewModel> departmentViewModels = new List<DepartmentViewModel>();
-
-            foreach (var department in departments)
+            var departments = _dbContext.Departments
+            // The select is used for project the consult SQL, without execute 
+            // Recomended for aplication of filters
+            .Select(d => new DepartmentViewModel()
             {
-                var departmentViewModel = new DepartmentViewModel
-                {
-                    DepartmentId = department.DepartmentId,
-                    Name = department.Name
-                };
+                DepartmentId = d.DepartmentId,
+                Name = d.Name
+            });
 
-                departmentViewModels.Add(departmentViewModel);
-            }
-
-            return departmentViewModels;
+            return departments;
         }
 
         public async Task AddAsync(DepartmentViewModel department)

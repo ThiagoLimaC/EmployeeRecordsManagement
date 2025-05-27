@@ -41,30 +41,23 @@ namespace EmployeeRecordsManagement.Repositories
             await _dbContext.SaveChangesAsync();
         }
 
-        public async Task<List<EmployeeViewModel>> GetAllAsync()
+        public IQueryable<EmployeeViewModel> GetAllAsync()
         {
-            List<Employee> employees = await _dbContext.Employees.ToListAsync();
-            List<EmployeeViewModel> employeeViewModels = new List<EmployeeViewModel>();
-
-            foreach (var employee in employees)
+            var employees = _dbContext.Employees
+            .Select(e => new EmployeeViewModel
             {
-                var employeeViewModel = new EmployeeViewModel()
-                {
-                    EmployeeId = employee.EmployeeId,
-                    FirstName = employee.FirstName,
-                    LastName = employee.LastName,
-                    DateOfBirth = employee.DateOfBirth,
-                    Gender = employee.Gender,
-                    Email = employee.Email,
-                    PhoneNumber = employee.PhoneNumber,
-                    Address = employee.Address,
-                    IsActive = employee.IsActive
-                };
+                EmployeeId = e.EmployeeId,
+                FirstName = e.FirstName,
+                LastName = e.LastName,
+                DateOfBirth = e.DateOfBirth,
+                Gender = e.Gender,
+                Email = e.Email,
+                PhoneNumber = e.PhoneNumber,
+                Address = e.Address,
+                IsActive = e.IsActive
+            });
 
-                employeeViewModels.Add(employeeViewModel);
-            }
-
-            return employeeViewModels;
+            return employees;
         }
 
 

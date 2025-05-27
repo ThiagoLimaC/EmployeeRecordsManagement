@@ -13,14 +13,14 @@ namespace EmployeeRecordsManagement.Controllers
             _departmentRepository = departmentRepository;
         }
 
-        public async Task<IActionResult> Index(string searchString, string sortOrder)
+        public async Task<IActionResult> Index(string searchString, string sortOrder, int pageNumber)
         {
-            var departments = await _departmentRepository.GetAllAsync();
+            var departments = _departmentRepository.GetAllAsync();
 
             // Search functionality
             if (!String.IsNullOrEmpty(searchString))
             {
-                departments = departments.Where(x => x.Name.Contains(searchString)).ToList();
+                departments = departments.Where(x => x.Name.Contains(searchString));
             }
 
 
@@ -31,16 +31,23 @@ namespace EmployeeRecordsManagement.Controllers
             switch (sortOrder)
             {
                 case "name_desc":
-                    departments = departments.OrderByDescending(d => d.Name).ToList();
+                    departments = departments.OrderByDescending(d => d.Name);
                     break;
 
                 default:
-                    departments = departments.OrderBy(d => d.Name).ToList();
+                    departments = departments.OrderBy(d => d.Name);
                     break;
             }
 
+            // Ensure pageNumber is at least 1
+            if (pageNumber < 1)
+            {
+                pageNumber = 1;
+            }
 
-            return View(departments);
+            int pageSize = 5;
+
+            return View(await PaginatedList<DepartmentViewModel>.CreateAsync(departments, pageNumber, pageSize));
         }
 
         // GET : Departments/Add
